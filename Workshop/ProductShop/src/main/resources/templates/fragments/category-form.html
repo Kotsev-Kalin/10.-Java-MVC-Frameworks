@@ -1,0 +1,11 @@
+<div xmlns:th="http://www.thymeleaf.org" lang="en">
+    <div class="form-group">
+        <label for="name" class="font-weight-bold">Name</label>
+        <input type="text" class="form-control text-center" id="name" name="name" th:field="*{name}"
+               th:value="${category.getName()}">
+    </div>
+    <hr class="hr-2 bg-dark">
+    <div class="button-holder d-flex justify-content-center">
+        <button id="button" type="submit" class="btn btn-success">Add Category</button>
+    </div>
+</div>

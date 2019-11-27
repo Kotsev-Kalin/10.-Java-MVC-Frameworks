@@ -1,0 +1,39 @@
+<header xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-resident-evil rounded">
+        <a class="navbar-brand" th:href="@{/}">Resident Evil</a>
+        <div class="collapse navbar-collapse d-flex justify-content-between bg-resident-evil" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link nav-link-white active" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item dropdown active" sec:authorize="isFullyAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Viruses</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <div sec:authorize="isFullyAuthenticated()">
+                            <a class="dropdown-item" th:href="@{/viruses/show}">Show</a>
+                        </div>
+                        <div sec:authorize="!hasAnyRole('USER')">
+                            <a class="dropdown-item" th:href="@{/viruses/add}">Add</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item" sec:authorize="hasAnyRole('ROOT', 'ADMIN')">
+                    <a class="nav-link nav-link-white active" th:href="@{/users}">Users</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item" sec:authorize="!isFullyAuthenticated()">
+                    <a class="nav-link nav-link-white active" th:href="@{/login}">Login</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isFullyAuthenticated()">
+                    <a class="nav-link nav-link-white active" th:href="@{/register}">Register</a>
+                </li>
+                <li class="nav-item" sec:authorize="isFullyAuthenticated()">
+                    <a class="nav-link nav-link-white active" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>

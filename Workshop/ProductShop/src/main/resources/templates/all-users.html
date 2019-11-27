@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block>
+    <div th:replace="fragments/head.html :: head"></div>
+</th:block>
+<body>
+<div class="container-fluid">
+    <th:block>
+        <div th:replace="fragments/header.html :: header"></div>
+    </th:block>
+    <main class="mt-3">
+        <h1 class="text-center text-dark">All Users</h1>
+        <hr class="hr-2 bg-dark w-75">
+        <table class="table table-hover w-75 mx-auto">
+            <thead>
+            <tr>
+                <th class="col-md-2 text-center">#</th>
+                <th class="col-md-3 text-center">Username</th>
+                <th class="col-md-2 text-center">Email</th>
+                <th class="col-md-2 text-center">Roles</th>
+                <th class="col-md-3 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody th:each="user, index : ${users}">
+            <tr>
+                <th class="col-md-2 text-center" scope="row" th:text="${index.count}"></th>
+                <td class="col-md-2 text-center" th:text="${user.getUsername()}"></td>
+                <td class="col-md-2 text-center" th:text="${user.getEmail()}"></td>
+                <td class="col-md-2 text-center" th:text="${#strings.listJoin(user.getRolesAsStrings(), ',')}"></td>
+                <td class="col-md-2 text-center">
+                    <div th:if="${!#lists.contains(user.getAuthorities(), adminrole)}">
+                        <a class="btn btn-light border-dark"
+                           th:href="@{/users/switchrole/admin/{id}(id=${user.getId()})}"
+                           th:text="'Make Admin'"></a>
+                    </div>
+
+                    <div th:if="${!#lists.contains(user.getAuthorities(), userrole)}">
+                        <a class="btn btn-light border-dark"
+                           th:href="@{/users/switchrole/user/{id}(id=${user.getId()})}"
+                           th:text="'Make User'"></a>
+                    </div>
+                    <div th:if="${!#lists.contains(user.getAuthorities(), moderatorrole)}">
+                        <a class="btn btn-light border-dark"
+                           th:href="@{/users/switchrole/moderator/{id}(id=${user.getId()})}"
+                           th:text="'Make Moderator'"></a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <hr class="hr-2 bg-dark">
+    </main>
+    <th:block>
+        <div th:replace="fragments/footer.html :: footer"></div>
+    </th:block>
+</div>
+</body>
+</html>

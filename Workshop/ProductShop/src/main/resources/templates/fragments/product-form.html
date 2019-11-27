@@ -1,0 +1,36 @@
+<div xmlns:th="http://www.thymeleaf.org" lang="en">
+    <div class="form-group">
+        <label for="name" class="font-weight-bold">Name</label>
+        <input type="text" class="form-control text-center" id="name" name="name" th:field="*{name}"
+               th:value="${product.getName()}">
+    </div>
+    <div class="form-group">
+        <label for="description" class="font-weight-bold">Description</label>
+        <textarea name="description" id="description" cols="41" rows="5" th:field="*{description}"
+                  th:value="${product.getDescription()}"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="price" class="font-weight-bold">Price</label>
+        <input type="number" step="0.01" min="0" class="form-control text-center" id="price" name="price"
+               th:field="*{price}"
+               th:value="${product.getPrice()}">
+    </div>
+    <div class="form-group">
+        <label for="add-product-categories" class="font-weight-bold">Categories</label>
+        <select multiple="multiple" class="form-control" id="add-product-categories" name="categories"
+                th:field="*{categories}">
+            <option selected="selected" disabled="disabled" value="">--- Select Categories ---</option>
+            <th:block th:each="category : ${categories}">
+                <option th:value="${category.getId()}" th:text="${category.getName()}"></option>
+            </th:block>
+        </select>
+    </div>
+    <div class="form-group image-field">
+        <label for="file" class="font-weight-bold">Image</label>
+        <input type="file" class="form-control-file" id="file" name="file">
+    </div>
+    <hr class="hr-2 bg-dark w-25">
+    <div class="button-holder d-flex justify-content-center">
+        <button type="submit" id="button" class="btn btn-success">Add Product</button>
+    </div>
+</div>

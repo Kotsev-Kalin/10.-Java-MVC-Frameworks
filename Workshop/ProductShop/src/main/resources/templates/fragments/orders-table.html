@@ -1,0 +1,32 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <table class="table table-hover w-75 mx-auto">
+        <thead>
+        <tr class="row mx-auto">
+            <th class="col-md-1 text-center">#</th>
+            <th class="col-md-3 text-center">Image</th>
+            <th class="col-md-3 text-center">Customer</th>
+            <th class="col-md-2 text-center">Price</th>
+            <th class="col-md-3 text-center">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="order, index : ${orders}">
+            <tr class="row mx-auto">
+                <th class="col-md-1 text-center">1</th>
+                <td class="col-md-3">
+                    <div class="text-center">
+                        <a th:href="@{/orders/details/{id}(id=${order.getId()})}">
+                            <img th:src="'/image/' + ${order.getProduct().getId()} +  '.jpg'"
+                                 width="40" height="40" alt="Product">
+                        </a>
+                    </div>
+                </td>
+                <td class="col-md-3 text-center" th:text="${order.getCustomer().getUsername()}"></td>
+                <td class="col-md-2 text-center" th:text="${order.getTotalPrice()}"></td>
+                <td class="col-md-3 text-center"
+                    th:text="${#temporals.format(order.getOrderDate(), 'dd-MM-yyyy HH:mm')}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>

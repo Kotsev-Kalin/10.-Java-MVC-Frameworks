@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<th:block>
+    <div th:replace="fragments/head.html :: head"></div>
+</th:block>
+<body>
+<div class="container-fluid">
+    <th:block>
+        <div th:replace="fragments/header.html :: header"></div>
+    </th:block>
+    <main class="mt-3">
+        <div class="flex flex-row justify-content-center">
+            <h2 class="mx-5 w-50 d-inline">Your Choice</h2>
+            <fieldset class="d-inline w-25 ml-5">
+                <label for="viruses" th:text="Viruses"></label>
+                <input class="custom-radio" name="choice" id="viruses" type="radio">
+            </fieldset>
+            <fieldset class="d-inline w-25">
+                <label for="capitals" th:text="Capitals"></label>
+                <input class="custom-radio" name="choice" id="capitals" type="radio">
+            </fieldset>
+        </div>
+        <hr/>
+        <h2 class="mx-auto">Select, what data you want to visualize!</h2>
+
+        <table id="table-viruses" class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Magnitude</th>
+                <th scope="col">Released On</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+
+        <table id="table-capitals" class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Latitude</th>
+                <th scope="col">Longitude</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+
+        <script>
+            $("#table-viruses").css("display", "none");
+            $("#table-capitals").css("display", "none");
+
+            $("input[id='viruses']").change(() => {
+                let index = 0;
+                if ($("input[id='viruses']:checked")) {
+                    $("#table-viruses tbody").empty();
+                    $("#table-viruses").css("display", "inline-table");
+                    $("#table-capitals").css("display", "none");
+                    fetch('http://localhost:8000/fetch/viruses')
+                        .then((response) => response.json())
+                        .then((json) => json.forEach((x) => {
+                            let tr = $("<tr>");
+                            $("<th>").text(++index).appendTo(tr);
+                            $("<td>").text(x.name).appendTo(tr);
+                            $("<td>").text(x.magnitude).appendTo(tr);
+                            $("<td>").text(x.releasedOn.substr(0, 10)).appendTo(tr);
+                            let editButton = $(`<a href="/viruses/edit/${x.id}" class="btn btn-info">`).text("Edit");
+                            $("<td>").append(editButton).appendTo(tr);
+                            let deleteButton = $(`<a href="/viruses/delete/${x.id}" class="btn btn-danger">`).text("Delete");
+                            $("<td>").append(deleteButton).appendTo(tr);
+                            $("#table-viruses tbody").append(tr);
+                        }));
+                }
+            });
+
+            $("input[id='capitals']").change(() => {
+                let index = 0;
+                if ($("input[id='capitals']:checked")) {
+                    $("#table-viruses").css("display", "none");
+                    $("#table-capitals tbody").empty();
+                    $("#table-capitals").css("display", "inline-table");
+                    fetch('http://localhost:8000/fetch/capitals')
+                        .then((response) => response.json())
+                        .then((json) => json.forEach((x) => {
+                            let tr = $("<tr>");
+                            $("<th>").text(++index).appendTo(tr);
+                            $("<td>").text(x.name).appendTo(tr);
+                            $("<td>").text(x.latitude).appendTo(tr);
+                            $("<td>").text(x.longitude).appendTo(tr);
+                            $("#table-capitals tbody").append(tr);
+                        }));
+                }
+            });
+        </script>
+    </main>
+    <th:block>
+        <div th:replace="fragments/footer.html :: footer"></div>
+    </th:block>
+</div>
+</body>
+</html>
